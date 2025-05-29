@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
-import { AddressModule } from './address/address.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { envSchema } from './env';
 
@@ -20,7 +19,6 @@ import { envSchema } from './env';
     }),
     UserModule,
     ProductModule,
-    AddressModule,
   ],
   controllers: [],
   providers: [],
