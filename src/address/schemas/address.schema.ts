@@ -29,6 +29,12 @@ export class Address {
   @Prop()
   complement?: string;
 
+  @Prop()
+  reference?: string;
+
+  @Prop()
+  type: string;
+
   @Prop({ required: true })
   latitude: number;
 

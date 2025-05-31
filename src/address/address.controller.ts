@@ -40,6 +40,8 @@ export class AddressController {
       userId: body.user_id,
       street: body.street,
       complement: body.complement,
+      reference: body.referente,
+      type: body.type,
     });
 
     return {
