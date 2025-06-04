@@ -9,8 +9,10 @@ export const updateAddressRequestBodyDto = z.object({
   number: z.number().int().positive().optional(),
   cep: z.number().int().positive().optional(),
   complement: z.string().optional(),
+  referente: z.string().optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
+  type: z.string(),
 });
 
 export type UpdateAddressRequestBodyDto = z.infer<
