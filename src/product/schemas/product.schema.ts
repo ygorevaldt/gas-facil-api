@@ -44,6 +44,12 @@ export class Product {
   @Prop({ required: true })
   note: number;
 
+  @Prop({ required: true })
+  sumNote: number;
+
+  @Prop({ required: true })
+  amountNotes: number;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -12,6 +12,8 @@ export const createProductRequestBodyDto = z.object({
   }),
   price: z.coerce.number(),
   note: z.coerce.number().default(0),
+  sum_note: z.coerce.number().default(0),
+  amount_notes: z.coerce.number().default(0),
 });
 
 export type CreateProductRequestBodyDto = z.infer<

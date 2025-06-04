@@ -16,4 +16,11 @@ export class ProductService {
   async fetch() {
     return await this.productModel.find();
   }
+
+  async update(product: Partial<Product>) {
+    return await this.productModel.findOneAndUpdate(
+      { id: product.id },
+      product,
+    );
+  }
 }
