@@ -8,6 +8,7 @@ export class AddressResponseDto {
   number: number;
   cep: number;
   complement?: string;
+  reference?: string;
   latitude: number;
   longitude: number;
 }

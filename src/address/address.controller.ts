@@ -40,7 +40,7 @@ export class AddressController {
       userId: body.user_id,
       street: body.street,
       complement: body.complement,
-      reference: body.referente,
+      reference: body.reference,
       type: body.type,
     });
 
@@ -74,6 +74,7 @@ export class AddressController {
       number: result.number,
       street: result.street,
       complement: result.complement,
+      reference: result.reference,
       created_at: result.createdAt,
       updated_at: result.updatedAt,
     };
@@ -100,6 +101,7 @@ export class AddressController {
       number: result.number,
       street: result.street,
       complement: result.complement,
+      reference: result.reference,
       created_at: result.createdAt,
       updated_at: result.updatedAt,
     };

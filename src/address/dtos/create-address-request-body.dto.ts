@@ -9,7 +9,7 @@ export const createAddressRequestBodyDto = z.object({
   number: z.number().int().positive(),
   cep: z.number().int().positive(),
   complement: z.string().optional(),
-  referente: z.string().optional(),
+  reference: z.string().optional(),
   type: z.string(),
   latitude: z.number(),
   longitude: z.number(),
