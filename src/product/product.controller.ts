@@ -21,7 +21,14 @@ export class ProductController {
         name: body.name,
         note: body.note,
         price: body.price,
-        seller: body.seller,
+        seller: {
+          name: body.seller.name,
+          phone: body.seller.phone,
+          openingHours: {
+            start: body.seller.opening_hours.start,
+            end: body.seller.opening_hours.end,
+          },
+        },
       });
 
     return {
@@ -29,7 +36,11 @@ export class ProductController {
       name,
       note,
       price,
-      seller,
+      seller: {
+        name: seller.name,
+        phone: seller.phone,
+        opening_hours: seller.openingHours,
+      },
       created_at: createdAt,
       updated_at: updatedAt,
     };
@@ -44,7 +55,11 @@ export class ProductController {
         name: item.name,
         note: item.note,
         price: item.price,
-        seller: item.seller,
+        seller: {
+          name: item.seller.name,
+          phone: item.seller.phone,
+          opening_hours: item.seller.openingHours,
+        },
         created_at: item.createdAt,
         updated_at: item.updatedAt,
       };
