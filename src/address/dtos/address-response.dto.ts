@@ -6,6 +6,7 @@ export class AddressResponseDto {
   district: string;
   street: string;
   number: number;
+  type: string;
   cep: number;
   complement?: string;
   reference?: string;
