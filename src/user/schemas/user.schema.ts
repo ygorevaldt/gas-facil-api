@@ -10,6 +10,9 @@ export class User {
   @Prop({ required: true })
   sessionId: string;
 
+  @Prop({ required: true, default: [] })
+  bookmarks?: string[];
+
   createdAt?: Date;
   updatedAt?: Date;
 }

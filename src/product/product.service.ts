@@ -17,6 +17,12 @@ export class ProductService {
     return await this.productModel.find();
   }
 
+  async fetchByIds(ids: string[]) {
+    return await this.productModel.find({
+      _id: { $in: ids },
+    });
+  }
+
   async update(product: Partial<Product>) {
     return await this.productModel.findOneAndUpdate(
       { id: product.id },
