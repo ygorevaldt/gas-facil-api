@@ -90,8 +90,8 @@ export class ProductController {
   async update(
     @Body()
     { amount_notes, sum_note, seller, ...rest }: UpdateProductRequestBodyDto,
-  ) {
-    return await this.productService.update({
+  ): Promise<ProductResponseDto> {
+    const response = await this.productService.update({
       ...rest,
       amountNotes: amount_notes,
       sumNote: sum_note,
@@ -108,5 +108,24 @@ export class ProductController {
           }
         : undefined,
     });
+
+    return {
+      id: response.id,
+      name: response.name,
+      note: response.note,
+      sum_note: response.sumNote,
+      amount_notes: response.amountNotes,
+      price: response.price,
+      seller: {
+        name: response.seller.name,
+        phone: response.seller.phone,
+        opening_hours: {
+          start: response.seller.openingHours.start,
+          end: response.seller.openingHours.end,
+        },
+      },
+      created_at: response.createdAt,
+      updated_at: response.updatedAt,
+    };
   }
 }

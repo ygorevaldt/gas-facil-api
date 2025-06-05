@@ -25,7 +25,7 @@ export class ProductService {
 
   async update(product: Partial<Product>) {
     return await this.productModel.findOneAndUpdate(
-      { id: product.id },
+      { _id: product.id },
       product,
       { new: true },
     );
