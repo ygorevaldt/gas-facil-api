@@ -21,6 +21,7 @@ export class ProductService {
     return await this.productModel.findOneAndUpdate(
       { id: product.id },
       product,
+      { new: true },
     );
   }
 }
