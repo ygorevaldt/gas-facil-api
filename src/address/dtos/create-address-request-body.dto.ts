@@ -5,7 +5,7 @@ export const createAddressRequestBodyDto = z.object({
   session_id: z.string().min(1),
   city: z.string().min(1),
   district: z.string().optional(),
-  street: z.string().min(1),
+  street: z.string().optional(),
   number: z.number().int().positive(),
   cep: z.number().int().positive(),
   complement: z.string().optional(),

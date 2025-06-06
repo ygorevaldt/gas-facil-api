@@ -14,10 +14,10 @@ export class Address {
   @Prop({ required: true })
   city: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, default: '' })
   district: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   street: string;
 
   @Prop({ required: true })
@@ -26,10 +26,10 @@ export class Address {
   @Prop({ required: true })
   cep: number;
 
-  @Prop()
+  @Prop({ required: false, default: '' })
   complement?: string;
 
-  @Prop()
+  @Prop({ required: false, default: '' })
   reference?: string;
 
   @Prop()
