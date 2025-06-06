@@ -14,7 +14,7 @@ export class Address {
   @Prop({ required: true })
   city: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   district: string;
 
   @Prop({ required: true })
