@@ -7,6 +7,9 @@ export type UserDocument = HydratedDocument<User>;
 export class User {
   id?: string;
 
+  @Prop({ required: false, type: Boolean, default: false })
+  isAdmin?: boolean;
+
   @Prop({ required: true })
   sessionId: string;
 

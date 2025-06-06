@@ -16,7 +16,7 @@ export class UserService {
   }
 
   async findBySessionId(sessionId: string) {
-    const document = await this.userModel.findOne({ sessionId }).exec();
+    const document = await this.userModel.findOne({ sessionId });
     if (!document) throw new NotFoundException();
 
     return document;

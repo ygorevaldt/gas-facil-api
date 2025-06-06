@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Put, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ZodValidationPipe } from 'src/shared/pipes';
 import {
@@ -10,12 +18,14 @@ import {
   UpdateProductRequestBodyDto,
   updateProductRequestBodyDto,
 } from './dto/update-product-body.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @UseGuards(AuthGuard('session'))
   @UsePipes(new ZodValidationPipe(createProductRequestBodyDto))
   async create(
     @Body() body: CreateProductRequestBodyDto,

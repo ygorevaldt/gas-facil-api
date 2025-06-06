@@ -45,12 +45,13 @@ export class UserController {
   async findOne(
     @Param('session_id') session_id: string,
   ): Promise<UserResponseDto> {
-    const { id, sessionId, createdAt, updatedAt, bookmarks } =
+    const { id, sessionId, createdAt, updatedAt, bookmarks, isAdmin } =
       await this.userService.findBySessionId(session_id);
 
     return {
       id,
       session_id: sessionId,
+      isAdmin,
       bookmarks,
       created_at: createdAt,
       updated_at: updatedAt,
