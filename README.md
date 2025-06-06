@@ -6,6 +6,10 @@ API desenvolvida em **NestJS** com **TypeScript** para fornecer suporte ao aplic
 
 A **Gas Fácil API** é responsável por gerenciar usuários, produtos e endereços de entrega, garantindo uma experiência fluida e segura para os consumidores.
 
+## Deploy
+
+A Gas Fácil API está atualmente hospedada no render.com (plano gratuito). Devido a isso, é necessário acessar [https://gas-facil-api.onrender.com](https://gas-facil-api.onrender.com) e aguardar cerca de 2 minutos para que a API esteja ativa e você consiga utilizar os demais endpoints.
+
 ## 🛠️ Tecnologias Utilizadas
 
 - ⚡ **NestJS** - Framework progressivo para Node.js
