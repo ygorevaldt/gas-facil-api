@@ -24,10 +24,8 @@ export class AddressService {
     const document = await this.addressModel.findOneAndUpdate(
       { sessionId: address.sessionId, userId: address.userId },
       address,
-      { new: true },
+      { new: true, upsert: true },
     );
-
-    if (!document) throw new NotFoundException();
 
     return document;
   }
