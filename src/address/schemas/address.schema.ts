@@ -11,7 +11,7 @@ export class Address {
   @Prop({ required: true })
   sessionId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   city: string;
 
   @Prop({ required: false, default: '' })
@@ -20,10 +20,10 @@ export class Address {
   @Prop({ required: false, default: '' })
   street: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: 0 })
   number: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: 0 })
   cep: number;
 
   @Prop({ required: false, default: '' })
@@ -32,7 +32,7 @@ export class Address {
   @Prop({ required: false, default: '' })
   reference?: string;
 
-  @Prop()
+  @Prop({ required: false, default: 'Casa' })
   type: string;
 
   @Prop({ required: true })
