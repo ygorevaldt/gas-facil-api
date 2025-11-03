@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { ClientService } from 'src/client/client.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: ClientService) {}
 
   async validateSession(sessionId: string): Promise<any> {
     const user = await this.userService.findBySessionId(sessionId);

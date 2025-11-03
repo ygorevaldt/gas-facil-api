@@ -1,4 +1,4 @@
-export class UserResponseDto {
+export class ClientResponseDto {
   id: string;
   isAdmin?: boolean;
   session_id: string;

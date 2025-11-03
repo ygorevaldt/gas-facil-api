@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from './schemas';
+import { Client } from './schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductService } from 'src/product/product.service';
 
 @Injectable()
-export class UserService {
+export class ClientService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Client.name) private userModel: Model<Client>,
     private productService: ProductService,
   ) {}
 
-  async create(user: User) {
+  async create(user: Client) {
     return await this.userModel.create(user);
   }
 
@@ -24,7 +24,7 @@ export class UserService {
 
   async fetchBookmarks(userId: string) {
     const user = await this.userModel.findById(userId);
-    if (!user) throw new NotFoundException('User is not registered');
+    if (!user) throw new NotFoundException('Client is not registered');
 
     const bookmarks = await this.productService.fetchByIds(user.bookmarks);
     return bookmarks;
@@ -32,7 +32,7 @@ export class UserService {
 
   async updateBookmarks(userId: string, bookmarks: string[]) {
     const user = await this.userModel.findById(userId);
-    if (!user) throw new NotFoundException('User is not registered');
+    if (!user) throw new NotFoundException('Client is not registered');
 
     return await this.userModel.findOneAndUpdate(
       { _id: userId },

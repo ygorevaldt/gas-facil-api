@@ -8,27 +8,27 @@ import {
   Put,
   UsePipes,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { ClientService } from './client.service';
 import { ZodValidationPipe } from 'src/shared/pipes';
 import {
-  CreateUserRequestBodyDto,
-  createUserRequestBodyDto,
-  UserResponseDto,
+  CreateClientRequestBodyDto,
+  createClientRequestBodyDto,
+  ClientResponseDto,
 } from './dtos';
 import { ProductResponseDto } from 'src/product/dto';
-import { UpdateUserRequestBodyDto } from './dtos/update-user-request-body.dto';
+import { UpdateClientRequestBodyDto } from './dtos/update-client-request-body.dto';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class ClientController {
+  constructor(private readonly clientService: ClientService) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(createUserRequestBodyDto))
+  @UsePipes(new ZodValidationPipe(createClientRequestBodyDto))
   async create(
-    @Body() body: CreateUserRequestBodyDto,
-  ): Promise<UserResponseDto> {
+    @Body() body: CreateClientRequestBodyDto,
+  ): Promise<ClientResponseDto> {
     const { id, sessionId, createdAt, updatedAt, bookmarks } =
-      await this.userService.create({
+      await this.clientService.create({
         sessionId: body.session_id,
       });
 
@@ -44,9 +44,9 @@ export class UserController {
   @Get('/:session_id')
   async findOne(
     @Param('session_id') session_id: string,
-  ): Promise<UserResponseDto> {
+  ): Promise<ClientResponseDto> {
     const { id, sessionId, createdAt, updatedAt, bookmarks, isAdmin } =
-      await this.userService.findBySessionId(session_id);
+      await this.clientService.findBySessionId(session_id);
 
     return {
       id,
@@ -58,11 +58,11 @@ export class UserController {
     };
   }
 
-  @Get('/bookmarks/:user_id')
+  @Get('/bookmarks/:client_id')
   async fetchBookmarks(
-    @Param('user_id') userId: string,
+    @Param('client_id') clientId: string,
   ): Promise<ProductResponseDto[]> {
-    const response = await this.userService.fetchBookmarks(userId);
+    const response = await this.clientService.fetchBookmarks(clientId);
 
     return response.map((product) => {
       return {
@@ -85,10 +85,10 @@ export class UserController {
 
   @Patch('/bookmarks')
   async updateBookmarks(
-    @Body() body: UpdateUserRequestBodyDto,
-  ): Promise<UserResponseDto> {
+    @Body() body: UpdateClientRequestBodyDto,
+  ): Promise<ClientResponseDto> {
     const { id, sessionId, createdAt, updatedAt, bookmarks } =
-      await this.userService.updateBookmarks(body.user_id, body.bookmarks);
+      await this.clientService.updateBookmarks(body.client_id, body.bookmarks);
 
     return {
       id,
