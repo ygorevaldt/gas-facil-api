@@ -15,6 +15,7 @@ import { ReviewModule } from './review/review.module';
     ConfigModule.forRoot({
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
+      envFilePath: '.env',
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],

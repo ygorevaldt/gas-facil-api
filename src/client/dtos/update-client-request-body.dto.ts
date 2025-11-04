@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const updateClientRequestBodyDto = z.object({
-  client_id: z.string().min(1),
+  user_id: z.string().min(1),
   bookmarks: z.string().array().optional(),
 });
 

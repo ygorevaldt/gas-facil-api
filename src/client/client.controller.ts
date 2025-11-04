@@ -58,11 +58,11 @@ export class ClientController {
     };
   }
 
-  @Get('/bookmarks/:client_id')
+  @Get('/bookmarks/:user_id')
   async fetchBookmarks(
-    @Param('client_id') clientId: string,
+    @Param('user_id') userId: string,
   ): Promise<ProductResponseDto[]> {
-    const response = await this.clientService.fetchBookmarks(clientId);
+    const response = await this.clientService.fetchBookmarks(userId);
 
     return response.map((product) => {
       return {
@@ -88,7 +88,7 @@ export class ClientController {
     @Body() body: UpdateClientRequestBodyDto,
   ): Promise<ClientResponseDto> {
     const { id, sessionId, createdAt, updatedAt, bookmarks } =
-      await this.clientService.updateBookmarks(body.client_id, body.bookmarks);
+      await this.clientService.updateBookmarks(body.user_id, body.bookmarks);
 
     return {
       id,
