@@ -64,6 +64,6 @@ export class AuthService {
     if (!seller) {
       throw new UnauthorizedException('User not authorized');
     }
-    return seller;
+    return { ...seller, id: userId };
   }
 }

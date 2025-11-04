@@ -10,24 +10,27 @@ export class ProductService {
   ) {}
 
   async create(product: Product) {
-    return await this.productModel.create(product);
+    const created = await this.productModel.create(product);
+    return created.toJSON();
   }
 
   async fetch() {
-    return await this.productModel.find();
+    return await this.productModel.find().lean().exec();
   }
 
   async fetchByIds(ids: string[]) {
-    return await this.productModel.find({
-      _id: { $in: ids },
-    });
+    return await this.productModel
+      .find({
+        _id: { $in: ids },
+      })
+      .lean()
+      .exec();
   }
 
   async update(product: Partial<Product>) {
-    return await this.productModel.findOneAndUpdate(
-      { _id: product.id },
-      product,
-      { new: true },
-    );
+    return await this.productModel
+      .findOneAndUpdate({ _id: product.id }, product, { new: true })
+      .lean()
+      .exec();
   }
 }

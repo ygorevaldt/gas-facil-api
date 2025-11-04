@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Put,
+  Req,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -19,79 +20,45 @@ import {
   updateProductRequestBodyDto,
 } from './dto/update-product-body.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { toSnakeCase } from 'src/shared/utils';
+import { Request } from 'express';
+import { Seller, SellerDocument } from 'src/seller/schemas';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  @UseGuards(AuthGuard('session'))
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ZodValidationPipe(createProductRequestBodyDto))
   async create(
     @Body() body: CreateProductRequestBodyDto,
+    @Req() req: Request,
   ): Promise<ProductResponseDto> {
-    const {
-      id,
-      name,
-      note,
-      sumNote,
-      amountNotes,
-      price,
-      seller,
-      createdAt,
-      updatedAt,
-    } = await this.productService.create({
+    const user = req.user as { id: string; email: string };
+    const product = await this.productService.create({
       name: body.name,
       note: body.note,
       sumNote: body.sum_note,
       amountNotes: body.amount_notes,
       price: body.price,
-      seller: {
-        name: body.seller.name,
-        phone: body.seller.phone,
-        openingHours: {
-          start: body.seller.opening_hours.start,
-          end: body.seller.opening_hours.end,
-        },
-      },
+      sellerId: user.id,
     });
 
-    return {
-      id,
-      name,
-      note,
-      sum_note: sumNote,
-      amount_notes: amountNotes,
-      price,
-      seller: {
-        name: seller.name,
-        phone: seller.phone,
-        opening_hours: seller.openingHours,
-      },
-      created_at: createdAt,
-      updated_at: updatedAt,
-    };
+    return toSnakeCase({
+      id: product.id || product._id.toString(),
+      ...product,
+    });
   }
 
   @Get()
   async fetch(): Promise<ProductResponseDto[]> {
     const response = await this.productService.fetch();
     return response.map((item) => {
-      return {
-        id: item.id,
-        name: item.name,
-        note: item.note,
-        sum_note: item.sumNote,
-        amount_notes: item.amountNotes,
-        price: item.price,
-        seller: {
-          name: item.seller.name,
-          phone: item.seller.phone,
-          opening_hours: item.seller.openingHours,
-        },
-        created_at: item.createdAt,
-        updated_at: item.updatedAt,
-      };
+      return toSnakeCase({
+        id: item.id || item._id.toString(),
+        ...response,
+      });
     });
   }
 
@@ -99,43 +66,17 @@ export class ProductController {
   @UsePipes(new ZodValidationPipe(updateProductRequestBodyDto))
   async update(
     @Body()
-    { amount_notes, sum_note, seller, ...rest }: UpdateProductRequestBodyDto,
+    { amount_notes, sum_note, ...rest }: UpdateProductRequestBodyDto,
   ): Promise<ProductResponseDto> {
     const response = await this.productService.update({
       ...rest,
       amountNotes: amount_notes,
       sumNote: sum_note,
-      seller: seller
-        ? {
-            name: seller?.name,
-            phone: seller?.phone,
-            openingHours: seller?.opening_hours
-              ? {
-                  start: seller?.opening_hours?.start,
-                  end: seller?.opening_hours?.end,
-                }
-              : undefined,
-          }
-        : undefined,
     });
 
-    return {
-      id: response.id,
-      name: response.name,
-      note: response.note,
-      sum_note: response.sumNote,
-      amount_notes: response.amountNotes,
-      price: response.price,
-      seller: {
-        name: response.seller.name,
-        phone: response.seller.phone,
-        opening_hours: {
-          start: response.seller.openingHours.start,
-          end: response.seller.openingHours.end,
-        },
-      },
-      created_at: response.createdAt,
-      updated_at: response.updatedAt,
-    };
+    return toSnakeCase({
+      id: response.id || response._id.toString(),
+      ...response,
+    });
   }
 }

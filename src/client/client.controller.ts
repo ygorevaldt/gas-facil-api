@@ -75,9 +75,15 @@ export class ClientController {
         created_at: product.createdAt,
         updated_at: product.updatedAt,
         seller: {
-          name: product.seller.name,
-          phone: product.seller.phone,
-          opening_hours: product.seller.openingHours,
+          // name: product.seller.name,
+          // phone: product.seller.phone,
+          // opening_hours: product.seller.openingHours,
+          name: '',
+          phone: '',
+          opening_hours: {
+            end: 1,
+            start: 1,
+          },
         },
       };
     });

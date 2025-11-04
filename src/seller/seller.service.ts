@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Seller } from './schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -20,10 +20,20 @@ export class SellerService {
   }
 
   async findByEmail(email: string) {
-    return this.sellerModel.findOne({ email }).exec();
+    return this.sellerModel.findOne({ email }).lean().exec();
   }
 
   async findById(id: string) {
-    return this.sellerModel.findById(id).exec();
+    return this.sellerModel.findById(id).lean().exec();
+  }
+
+  async update(seller: Seller) {
+    const document = await this.sellerModel.findOneAndUpdate(
+      { _id: seller.id },
+      seller,
+      { new: true, upsert: true },
+    );
+
+    return document.toJSON();
   }
 }

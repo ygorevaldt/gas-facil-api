@@ -1,5 +1,3 @@
-import { Seller } from '../schemas';
-
 export class ProductResponseDto {
   id: string;
   name: string;
