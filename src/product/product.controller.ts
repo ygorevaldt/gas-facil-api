@@ -54,12 +54,15 @@ export class ProductController {
   @Get()
   async fetch(): Promise<ProductResponseDto[]> {
     const response = await this.productService.fetch();
-    return response.map((item) => {
+
+    const products = response.map((item) => {
       return toSnakeCase({
-        id: item.id || item._id.toString(),
-        ...response,
+        id: item.id,
+        ...item,
       });
     });
+
+    return products;
   }
 
   @Put()

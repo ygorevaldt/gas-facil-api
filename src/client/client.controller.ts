@@ -17,6 +17,7 @@ import {
 } from './dtos';
 import { ProductResponseDto } from 'src/product/dto';
 import { UpdateClientRequestBodyDto } from './dtos/update-client-request-body.dto';
+import { toSnakeCase } from 'src/shared/utils';
 
 @Controller('user')
 export class ClientController {
@@ -59,33 +60,14 @@ export class ClientController {
   }
 
   @Get('/bookmarks/:user_id')
-  async fetchBookmarks(
-    @Param('user_id') userId: string,
-  ): Promise<ProductResponseDto[]> {
+  async fetchBookmarks(@Param('user_id') userId: string) {
     const response = await this.clientService.fetchBookmarks(userId);
 
     return response.map((product) => {
-      return {
+      return toSnakeCase({
         id: product.id,
-        name: product.name,
-        note: product.note,
-        amount_notes: product.amountNotes,
-        sum_note: product.sumNote,
-        price: product.price,
-        created_at: product.createdAt,
-        updated_at: product.updatedAt,
-        seller: {
-          // name: product.seller.name,
-          // phone: product.seller.phone,
-          // opening_hours: product.seller.openingHours,
-          name: '',
-          phone: '',
-          opening_hours: {
-            end: 1,
-            start: 1,
-          },
-        },
-      };
+        ...product,
+      });
     });
   }
 
