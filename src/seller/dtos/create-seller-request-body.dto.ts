@@ -23,6 +23,10 @@ export const createSellerRequestBodyDto = z.object({
   zip_code: z
     .string()
     .regex(/^\d{5}-\d{3}$/, 'CEP inválido — formato esperado: 00000-000'),
+  opening_hours: z.object({
+    start: z.number(),
+    end: z.number(),
+  }),
 });
 
 export type CreateSellerRequestBodyDto = z.infer<

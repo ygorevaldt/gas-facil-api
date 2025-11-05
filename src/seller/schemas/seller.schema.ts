@@ -1,6 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
+@Schema({ _id: false })
+export class OpeningHours {
+  @Prop({ type: Number, required: true })
+  start: number;
+
+  @Prop({ type: Number, required: true })
+  end: number;
+}
+
+export const OpeningHoursSchema = SchemaFactory.createForClass(OpeningHours);
+
 export type SellerDocument = HydratedDocument<Seller>;
 
 @Schema({ collection: 'sellers', timestamps: true })
@@ -39,6 +50,9 @@ export class Seller {
 
   @Prop({ required: true })
   zipCode: string;
+
+  @Prop({ type: OpeningHoursSchema, required: true })
+  openingHours: OpeningHours;
 
   createdAt?: Date;
   updatedAt?: Date;

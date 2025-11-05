@@ -39,6 +39,10 @@ export class SellerController {
       city: body.city,
       state: body.state,
       zipCode: body.zip_code,
+      openingHours: {
+        start: body.opening_hours.start,
+        end: body.opening_hours.end,
+      },
     });
 
     return toSnakeCase({
@@ -78,6 +82,10 @@ export class SellerController {
       city: body.city,
       state: body.state,
       zipCode: body.zip_code,
+      openingHours: {
+        start: body.opening_hours.start,
+        end: body.opening_hours.end,
+      },
     });
 
     return toSnakeCase({

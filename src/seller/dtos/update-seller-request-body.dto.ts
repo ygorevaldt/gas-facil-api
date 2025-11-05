@@ -30,6 +30,12 @@ export const updateSellerRequestBodyDto = z.object({
     .string()
     .regex(/^\d{5}-\d{3}$/, 'CEP inválido — formato esperado: 00000-000')
     .optional(),
+  opening_hours: z
+    .object({
+      start: z.number().optional(),
+      end: z.number().optional(),
+    })
+    .optional(),
 });
 
 export type UpdateSellerRequestBodyDto = z.infer<
