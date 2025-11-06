@@ -37,7 +37,7 @@ export class AuthService {
 
     return {
       access_token: token,
-      seller: {
+      user: {
         id: seller._id,
         name: seller.fullName,
         email: seller.email,

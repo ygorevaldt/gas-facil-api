@@ -22,8 +22,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { toSnakeCase } from 'src/shared/utils';
 import { Request } from 'express';
-import { Seller, SellerDocument } from 'src/seller/schemas';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
