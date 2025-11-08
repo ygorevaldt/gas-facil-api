@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas';
 import mongoose, { Model } from 'mongoose';
@@ -37,6 +41,7 @@ export class ProductService {
     return products.map((item) => ({
       id: item._id.toString(),
       name: item.name,
+      description: item.description,
       note: item.note,
       sum_note: item.sumNote,
       amount_notes: item.amountNotes,
@@ -76,11 +81,10 @@ export class ProductService {
       ])
       .exec();
 
-    console.log(products);
-
     return products.map((item) => ({
       id: item._id.toString(),
       name: item.name,
+      description: item.description,
       note: item.note,
       sumNote: item.sumNote,
       amountNotes: item.amountNotes,
@@ -100,5 +104,16 @@ export class ProductService {
       .findOneAndUpdate({ _id: product.id }, product, { new: true })
       .lean()
       .exec();
+  }
+
+  async delete(id: string, sellerId: string) {
+    const product = await this.productModel.findById(id);
+    if (!product) throw new NotFoundException();
+
+    if (product.sellerId !== sellerId) throw new UnauthorizedException();
+
+    return await this.productModel.deleteOne({
+      _id: id,
+    });
   }
 }

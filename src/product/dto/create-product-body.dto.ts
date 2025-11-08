@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const createProductRequestBodyDto = z.object({
   name: z.string().min(2),
+  description: z.string().optional(),
   price: z.coerce.number(),
   note: z.coerce.number().default(0),
   sum_note: z.coerce.number().default(0),

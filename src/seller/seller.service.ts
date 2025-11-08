@@ -28,6 +28,12 @@ export class SellerService {
   }
 
   async update(seller: Seller) {
+    if (seller.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(seller.password, salt);
+      seller.password = hashedPassword;
+    }
+
     const document = await this.sellerModel.findOneAndUpdate(
       { _id: seller.id },
       seller,

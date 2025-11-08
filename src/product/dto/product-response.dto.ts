@@ -1,6 +1,7 @@
 export class ProductResponseDto {
   id: string;
   name: string;
+  description?: string;
   seller: ProductResponseSeller;
   price: number;
   note: number;

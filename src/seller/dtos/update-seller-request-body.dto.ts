@@ -5,10 +5,8 @@ export const updateSellerRequestBodyDto = z.object({
   full_name: z.string().min(1, 'Nome completo é obrigatório').optional(),
   phone: z
     .string()
-    .regex(
-      /^\(\d{2}\)\s?\d{4,5}-\d{4}$/,
-      'Telefone inválido — formato esperado: (11) 98765-4321',
-    )
+    .min(1, 'O telefone é obrigatório')
+    .max(15, 'O telefone deve ser válido')
     .optional(),
   email: z.string().email('E-mail inválido').optional(),
   password: z
@@ -28,7 +26,8 @@ export const updateSellerRequestBodyDto = z.object({
     .optional(),
   zip_code: z
     .string()
-    .regex(/^\d{5}-\d{3}$/, 'CEP inválido — formato esperado: 00000-000')
+    .min(1, 'CEP é obrigatório')
+    .max(8, 'Cep deve ser válido')
     .optional(),
   opening_hours: z
     .object({

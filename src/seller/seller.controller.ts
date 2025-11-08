@@ -83,8 +83,8 @@ export class SellerController {
       state: body.state,
       zipCode: body.zip_code,
       openingHours: {
-        start: body.opening_hours.start,
-        end: body.opening_hours.end,
+        start: body.opening_hours?.start,
+        end: body.opening_hours?.end,
       },
     });
 
