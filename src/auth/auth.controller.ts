@@ -56,7 +56,6 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) response: Response) {
     response.cookie('access_token', '', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 0,
     });
