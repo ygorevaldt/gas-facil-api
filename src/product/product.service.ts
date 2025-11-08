@@ -18,25 +18,35 @@ export class ProductService {
     return created.toJSON();
   }
 
-  async fetch() {
-    const products = await this.productModel
-      .aggregate([
-        {
-          $addFields: {
-            sellerIdObj: { $toObjectId: '$sellerId' },
-          },
+  async fetch(userId?: string) {
+    const pipeline: any[] = [];
+
+    if (userId) {
+      pipeline.push({
+        $match: {
+          sellerId: userId,
         },
-        {
-          $lookup: {
-            from: 'sellers',
-            localField: 'sellerIdObj',
-            foreignField: '_id',
-            as: 'seller',
-          },
+      });
+    }
+
+    pipeline.push(
+      {
+        $addFields: {
+          sellerIdObj: { $toObjectId: '$sellerId' },
         },
-        { $unwind: '$seller' },
-      ])
-      .exec();
+      },
+      {
+        $lookup: {
+          from: 'sellers',
+          localField: 'sellerIdObj',
+          foreignField: '_id',
+          as: 'seller',
+        },
+      },
+      { $unwind: '$seller' },
+    );
+
+    const products = await this.productModel.aggregate(pipeline).exec();
 
     return products.map((item) => ({
       id: item._id.toString(),

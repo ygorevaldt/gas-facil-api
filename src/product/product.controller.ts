@@ -67,6 +67,22 @@ export class ProductController {
     return products;
   }
 
+  @Get('/seller')
+  @UseGuards(AuthGuard('jwt'))
+  async fetchBySeller(@Req() req: Request): Promise<ProductResponseDto[]> {
+    const user = req.user as { id: string; email: string };
+    const response = await this.productService.fetch(user.id);
+
+    const products = response.map((item) => {
+      return toSnakeCase({
+        id: item.id,
+        ...item,
+      });
+    });
+
+    return products;
+  }
+
   @Put()
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ZodValidationPipe(updateProductRequestBodyDto))
