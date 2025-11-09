@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Seller } from './schemas';
+import { OpeningHours, Seller } from './schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
@@ -34,12 +34,24 @@ export class SellerService {
       seller.password = hashedPassword;
     }
 
-    const document = await this.sellerModel.findOneAndUpdate(
+    const document = await this.sellerModel.findById(seller.id);
+    if (!document) throw new NotFoundException();
+
+    if (!seller.openingHours) {
+      seller.openingHours = {} as any;
+    }
+
+    seller.openingHours.start =
+      seller.openingHours.start ?? document.openingHours.start;
+    seller.openingHours.end =
+      seller.openingHours.end ?? document.openingHours.end;
+
+    const updated = await this.sellerModel.findOneAndUpdate(
       { _id: seller.id },
-      seller,
+      { $set: seller },
       { new: true, upsert: true },
     );
 
-    return document.toJSON();
+    return updated.toJSON();
   }
 }
