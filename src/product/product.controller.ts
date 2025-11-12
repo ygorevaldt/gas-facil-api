@@ -16,7 +16,11 @@ import {
   CreateProductRequestBodyDto,
   createProductRequestBodyDto,
 } from './dto/create-product-body.dto';
-import { ProductResponseDto } from './dto';
+import {
+  EvaluateProductRequestBodyDto,
+  evaluateProductRequestBodyDto,
+  ProductResponseDto,
+} from './dto';
 import {
   UpdateProductRequestBodyDto,
   updateProductRequestBodyDto,
@@ -89,6 +93,24 @@ export class ProductController {
   async update(
     @Body()
     { amount_notes, sum_note, ...rest }: UpdateProductRequestBodyDto,
+  ): Promise<ProductResponseDto> {
+    const response = await this.productService.update({
+      ...rest,
+      amountNotes: amount_notes,
+      sumNote: sum_note,
+    });
+
+    return toSnakeCase({
+      id: response.id || response._id.toString(),
+      ...response,
+    });
+  }
+
+  @Put('/evaluate')
+  @UsePipes(new ZodValidationPipe(evaluateProductRequestBodyDto))
+  async evaluate(
+    @Body()
+    { amount_notes, sum_note, ...rest }: EvaluateProductRequestBodyDto,
   ): Promise<ProductResponseDto> {
     const response = await this.productService.update({
       ...rest,
