@@ -18,10 +18,14 @@ import { ZodValidationPipe } from 'src/shared/pipes';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { Request as ExpressRequest } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @UseGuards(AuthGuard('session'))
   @Post('validate')
@@ -40,9 +44,13 @@ export class AuthController {
       body.password,
     );
 
+    const isProduction =
+      this.configService.get<string>('NODE_ENV') === 'production';
+
     response.cookie('access_token', access_token, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: isProduction ? 'none' : 'lax',
+      secure: isProduction,
       maxAge: 24 * 60 * 60 * 1000, //Expira em 1 dia
     });
 
