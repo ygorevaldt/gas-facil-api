@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { OpeningHours, Seller } from './schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,6 +14,11 @@ export class SellerService {
   constructor(@InjectModel(Seller.name) private sellerModel: Model<Seller>) {}
 
   async create(seller: Seller) {
+    const alreadyRegistered = await this.findByEmail(seller.email);
+    if (alreadyRegistered) {
+      throw new NotAcceptableException('Usuário já cadastrado');
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(seller.password, salt);
 
