@@ -28,6 +28,11 @@ A API oferece diversas funcionalidades essenciais para o funcionamento do **Gas 
 ✅ **Buscar endereço** por `session_id`  
 ✅ **Atualizar endereço** de entrega
 
+### 👤 Vendedor (`/seller`)
+
+✅ **Criar vendedor** com `session_id`  
+✅ **Atualizar dados do vendedor** por `session_id`  
+
 ### 🛒 Produtos (`/product`)
 
 ✅ **Cadastrar produtos** (protegido por autenticação)  
@@ -39,6 +44,7 @@ A API oferece diversas funcionalidades essenciais para o funcionamento do **Gas 
 ✅ **Criar usuário** com `session_id`  
 ✅ **Buscar usuário** por `session_id`  
 ✅ **Gerenciar favoritos** (adicionar/remover produtos favoritos)
+
 
 ## 📦 Instalação
 
@@ -65,45 +71,65 @@ npm run start:dev
 
 A API segue uma estrutura RESTful. Aqui estão os endpoints disponíveis:
 
+### 🔐 Autenticação: `/auth`
+
+### - Validar sessão
+**POST** `/auth/validate`  
+Requer Header `Authorization: Bearer <token>`
+
+### - Login
+**POST** `/auth/login`  
+Content-Type: application/json
+```json
+{
+  "email": "email@exemplo.com",
+  "password": "senha"
+}
+```
+
+### - Logout
+**POST** `/auth/logout`
+
+---
+
 ### 🏠 Endereços: `/address`
 
 ### - Criar um endereço
-
 **POST** `/address`  
 Content-Type: application/json
-
 ```json
 {
-  "user_id": "123",
-  "session_id": "123",
-  "city": "São Paulo",
-  "street": "Av. Paulista",
-  "number": 100,
+  "user_id": "string",
+  "session_id": "string",
+  "city": "string",
+  "street": "string",
+  "number": 123,
   "cep": 12345678,
-  "latitude": -23.563099,
-  "longitude": -46.654321
+  "latitude": -23.550520,
+  "longitude": -46.633308,
+  "district": "string",
+  "complement": "string",
+  "reference": "string",
+  "type": "Home | Work | Other"
 }
 ```
 
 ### - Buscar endereço por session_id
-
 **GET** `/address/{session_id}`
 
 ### - Atualizar um endereço
-
-PUT `/address`<br/>
+**PUT** `/address`  
 Content-Type: application/json
-
 ```json
 {
-  "user_id": "123", // - required
-  "session_id": "123", // - required
-  "city": "Rio de Janeiro",
-  "street": "Rua das Flores",
-  "number": 200,
-  "cep": 87654321,
-  "latitude": -22.90278,
-  "longitude": -43.2075
+  "session_id": "string",
+  "user_id": "string",
+  "city": "string",
+  "street": "string",
+  "number": 123,
+  "cep": 12345678,
+  "latitude": -23.550520,
+  "longitude": -46.633308
 }
 ```
 
@@ -111,48 +137,87 @@ Content-Type: application/json
 
 ### 🛒 Produtos: `/product`
 
-### - Criar um produto (Autênticado)
-
-POST `/product`<br/>
+### - Criar um produto (Autenticado)
+**POST** `/product`  
 Content-Type: application/json
-
 ```json
 {
-  "name": "Botijão de gás",
-  "price": 120.99,
-  "seller": {
-    "name": "Distribuidora XYZ",
-    "phone": "+55 99999-9999",
-    "opening_hours": {
-      "start": "08:00",
-      "end": "18:00"
-    }
+  "name": "Nome do Produto",
+  "description": "Descrição do produto",
+  "price": 100.00,
+  "note": 5,
+  "amount_notes": 1,
+  "sum_note": 5
+}
+```
+
+### - Listar todos produtos
+**GET** `/product`
+
+### - Listar produtos do vendedor (Autenticado)
+**GET** `/product/seller`
+
+### - Atualizar produto (Autenticado)
+**PUT** `/product`  
+Content-Type: application/json
+```json
+{
+  "id": "product_id",
+  "name": "Novo Nome",
+  "price": 150.00
+}
+```
+
+### - Avaliar produto
+**PUT** `/product/evaluate`  
+Content-Type: application/json
+```json
+{
+  "id": "product_id",
+  "note": 4
+}
+```
+
+### - Deletar produto (Autenticado)
+**DELETE** `/product/{product_id}`
+
+---
+
+### 🏪 Vendedores: `/seller`
+
+### - Criar vendedor
+**POST** `/seller`  
+Content-Type: application/json
+```json
+{
+  "full_name": "Nome Completo",
+  "phone": "11999999999",
+  "email": "email@exemplo.com",
+  "password": "senha_segura",
+  "street": "Rua Exemplo",
+  "number": 123,
+  "neighborhood": "Bairro",
+  "city": "Cidade",
+  "state": "UF",
+  "zip_code": "12345678",
+  "opening_hours": {
+    "start": "08:00",
+    "end": "18:00"
   }
 }
 ```
 
-### - Listar produtos disponíveis
+### - Buscar vendedor
+**GET** `/seller/{seller_id}`
 
-GET `/product`
-
-### - Atualizar produto
-
-PUT `/product`<br/>
+### - Atualizar vendedor
+**PUT** `/seller`  
 Content-Type: application/json
-
 ```json
 {
-  "id": "id_produto", // - required
-  "name": "Botijão de gás",
-  "price": 120.99,
-  "seller": {
-    "name": "Distribuidora XYZ",
-    "phone": "+55 99999-9999",
-    "opening_hours": {
-      "start": "08:00",
-      "end": "18:00"
-    }
-  }
+  "id": "seller_id",
+  "full_name": "Novo Nome",
+  "phone": "11888888888"
 }
 ```
 
@@ -161,33 +226,27 @@ Content-Type: application/json
 ### 👤 Usuários: `/user`
 
 ### - Criar usuário
-
-POST `/user`<br/>
+**POST** `/user`  
 Content-Type: application/json
-
 ```json
 {
-  "session_id": "123"
+  "session_id": "string"
 }
 ```
 
 ### - Buscar usuário por session_id
+**GET** `/user/{session_id}`
 
-GET `/user/{session_id}`
+### - Buscar favoritos
+**GET** `/user/bookmarks/{user_id}`
 
-### - Buscar produtos favoritos do usuário
-
-GET `/user/bookmarks/{user_id}`
-
-### - Atualizar produtos favoritos do usuário
-
-PATCH `/user/bookmarks`<br/>
+### - Atualizar favoritos
+**PATCH** `/user/bookmarks`  
 Content-Type: application/json
-
 ```json
 {
-  "user_id": "123",
-  "bookmarks": ["produto1", "produto2", "produto3"]
+  "user_id": "string",
+  "bookmarks": ["product_id_1", "product_id_2"]
 }
 ```
 
